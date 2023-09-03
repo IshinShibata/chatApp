@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: dockerMySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: rootPassword
+      MYSQL_DATABASE: chatAppDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/go/src/chat-app
+    ports:
+      - "8080:8080"
+    command: sh -c "air -c .air.toml"
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: dockerMySQL
+      MYSQL_DATABASE: chatAppDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+volumes:
+  mysql-data:
