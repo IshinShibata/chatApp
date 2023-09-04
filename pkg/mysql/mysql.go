@@ -10,6 +10,10 @@ import (
 
 var client *ent.Client
 
+func GetClient() *ent.Client {
+	return client
+}
+
 func DbSetUp() {
 	user := os.Getenv("MYSQL_USER")
 	pass := os.Getenv("MYSQL_PASSWORD")

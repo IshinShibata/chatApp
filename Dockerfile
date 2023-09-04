@@ -5,17 +5,10 @@ FROM golang:1.19.4
 WORKDIR /go/src/chat-app
 
 # 依存関係をコピーしてinstall
-COPY go.mod .
-COPY go.sum .
+COPY go.* .
 RUN go mod download && \
     go get github.com/cosmtrek/air && \
     go install github.com/cosmtrek/air@latest
 
 # アプリケーションのソースをコピー
-COPY . .
-
-# アプリケーションをビルド
-RUN go build -o main .
-
-# アプリケーションを実行
-CMD ["./main"]
+COPY . ./go/src/chat-app
